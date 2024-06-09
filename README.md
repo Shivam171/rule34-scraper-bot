@@ -6,14 +6,14 @@
 
 ## 📃 Description
 
-A Node.js console-based scraper using Puppeteer to extract images and metadata from rule34.xxx based on user input.
+A Node.js console-based scraper using Puppeteer to extract images and metadata into a json file, from rule34.xxx based on search tags.
 
 ## ✅ Features
 
 - Added plugins that help prevent detection.
 - Scrapes images, URLs, post details, and metadata.
 - Handles pagination and avoids duplicate data.
-- Saves data in a dynamic JSON file named after the search term.
+- Saves data in a dynamic JSON file named after the search tags.
 
 ## 📦 Packages Used
 
@@ -32,14 +32,14 @@ A Node.js console-based scraper using Puppeteer to extract images and metadata f
 
 ```bash
 node index.js
-# Enter search term: catgirl
-# Scraping data for catgirl...
-# Data saved in catgirl_scrapped_data.json
+# Enter search term: cat
+# Scraping data for cat...
+# Data saved in cat_scrapped_data.json
 ```
 
 ## ⚠️ Disclaimer
 
-Web scraping can violate website terms of service. Use responsibly and ensure legality and ethical compliance before scraping any website. This project is for educational purposes only.
+Web scraping can violate website terms of service. Use responsibly and ensure legality and ethical compliance before scraping any website. Contents of this website can be "NSFW" (not safe for work), use responsibly. This project is for educational purposes only.
 
 ## 🫂 Contributing
 
