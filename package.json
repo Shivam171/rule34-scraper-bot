@@ -1,0 +1,22 @@
+{
+  "name": "rule34-scraper-bot",
+  "version": "1.0.0",
+  "description": "A very secure puppeteer bot for scraping images from rule34.xxx",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Shivam171",
+  "license": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Shivam171/rule34-scraper-bot"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "puppeteer": "^22.10.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}
