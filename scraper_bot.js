@@ -10,7 +10,7 @@ const url = "https://rule34.xxx/";
 
 const main = async () => {
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     executablePath: executablePath(),
   });
   const page = await browser.newPage();
@@ -19,24 +19,30 @@ const main = async () => {
   // Wait for the search form to load
   await page.waitForSelector("form > input[type=submit]");
 
-  // Read the search term from the console
+  // Read the search tag from the console
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
   });
 
   console.log("-------------------------------------------");
-  rl.question("Enter your search term: ", async (searchTerm) => {
-    // Type the search term into the search box
-    await page.type("#tags", searchTerm);
+  console.log("       Welcome to Rule34 Scraper Bot       ");
+  console.log("-------------------------------------------");
+  console.log(
+    "Just enter the appropriate tags, follow the same convention used in Rule34.\nJson file will be generated in your current path.\nGenerated json file will include images, videos and other meta data.\nIf you encounter an bug, please open a issue: https://github.com/Shivam171/rule34-scraper-bot\n\nNOTE: To close the program enter {ctrl + c}"
+  );
+  console.log("-------------------------------------------");
+  rl.question("Enter your search tags: ", async (searchTag) => {
+    // Type the search tag into the search box
+    await page.type("#tags", searchTag);
 
     // Click the search button
     const searchBtn = await page.$("form > input[type=submit]");
     if (searchBtn) {
       await Promise.all([
         searchBtn.click(),
+        console.log("Searching..."),
         page.waitForNavigation({ waitUntil: "load" }),
-        console.log("-------------------------------------------"),
         console.log("Retriving data from rule34..."),
         console.log("-------------------------------------------"),
       ]);
@@ -47,7 +53,7 @@ const main = async () => {
     let pageCount = 0;
     // Load existing data from the JSON file
     let existingData = [];
-    const outputFileName = `${searchTerm.replace(
+    const outputFileName = `${searchTag.replace(
       /\s+/g,
       "_"
     )}_scrapped_data.json`;
@@ -191,7 +197,7 @@ const main = async () => {
           break;
         }
       } catch (err) {
-        console.log("Error during pagination:", err);
+        console.log("Some error occured: ", err);
         break;
       }
     }
