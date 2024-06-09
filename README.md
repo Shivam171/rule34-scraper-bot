@@ -1,3 +1,6 @@
+
+![rule34-scraper-bot](https://github.com/Shivam171/rule34-scraper-bot/assets/66107248/5edb6829-804d-45f3-8887-2d1bec080682)
+
 # Rule34 Scraper Bot 🕵️‍♂️
 
 [![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)]()
