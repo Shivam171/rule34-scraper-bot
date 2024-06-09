@@ -6,12 +6,12 @@
 
 ## 📃 Description
 
-A Node.js console-based scraper using Puppeteer to extract images and metadata into a json file, from rule34.xxx based on search tags.
+A Node.js console-based scraper using Puppeteer to extract images, videos and metadata into a json file, from rule34.xxx based on search tags.
 
 ## ✅ Features
 
 - Added plugins that help prevent detection.
-- Scrapes images, URLs, post details, and metadata.
+- Scrapes images & videos URLs, post details, and other metadata.
 - Handles pagination and avoids duplicate data.
 - Saves data in a dynamic JSON file named after the search tags.
 
