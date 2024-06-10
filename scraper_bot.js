@@ -2,11 +2,39 @@ const puppeteer = require("puppeteer-extra");
 const stealthPlugin = require("puppeteer-extra-plugin-stealth");
 const fs = require("fs");
 const readline = require("readline");
+const axios = require("axios");
+const path = require("path");
 
 puppeteer.use(stealthPlugin());
 const { executablePath } = require("puppeteer");
 
 const url = "https://rule34.xxx/";
+
+const downloadFile = async (url, directory, filename) => {
+  try {
+    const response = await axios({
+      url,
+      method: "GET",
+      responseType: "stream",
+    });
+
+    const outputPath = path.join(directory, filename);
+    const writer = fs.createWriteStream(outputPath);
+    response.data.pipe(writer);
+
+    return new Promise((resolve, reject) => {
+      writer.on("finish", resolve);
+      writer.on("error", reject);
+    });
+  } catch (error) {
+    console.error(`Failed to download ${url}:`, error);
+  }
+};
+
+const getFileExtension = (url) => {
+  const match = url.match(/\.([a-zA-Z0-9]+)(?:[\?#]|$)/);
+  return match ? match[1] : "";
+};
 
 const main = async () => {
   const browser = await puppeteer.launch({
@@ -164,6 +192,15 @@ const main = async () => {
           if (!isDuplicate) {
             dataList.push(data);
             existingData.push(data);
+
+            // Download the media file
+            const directory = data.type === "image" ? "images" : "videos";
+            const extension = getFileExtension(data.src);
+            const filename = `${data.id}.${extension}`;
+            if (!fs.existsSync(directory)) {
+              fs.mkdirSync(directory);
+            }
+            await downloadFile(data.src, directory, filename);
           }
 
           // Save the collected data to a JSON file
