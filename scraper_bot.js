@@ -61,184 +61,209 @@ const main = async () => {
   );
   console.log("-------------------------------------------");
   rl.question("Enter your search tags: ", async (searchTag) => {
-    // Type the search tag into the search box
-    await page.type("#tags", searchTag);
+    console.log("-------------------------------------------");
+    console.log("            Choose your option             ");
+    console.log("1. JSON data Only                          ");
+    console.log("2. Images Only                             ");
+    console.log("3. Videos Only                             ");
+    console.log("4. All above                               ");
+    console.log("-------------------------------------------");
 
-    // Click the search button
-    const searchBtn = await page.$("form > input[type=submit]");
-    if (searchBtn) {
-      await Promise.all([
-        searchBtn.click(),
-        console.log("Searching..."),
-        page.waitForNavigation({ waitUntil: "load" }),
-        console.log("Retriving data from rule34..."),
-        console.log("-------------------------------------------"),
-      ]);
-    }
-    // Close the readline interface after the search is performed
-    rl.close();
+    rl.question("Enter your choice: ", async (choice) => {
+      console.log("-------------------------------------------");
+      const downloadImages = choice === "2" || choice === "4";
+      const downloadVideos = choice === "3" || choice === "4";
+      const saveJson = choice === "1" || choice === "4";
 
-    let pageCount = 0;
-    // Load existing data from the JSON file
-    let existingData = [];
-    const outputFileName = `${searchTag.replace(
-      /\s+/g,
-      "_"
-    )}_scrapped_data.json`;
-    if (fs.existsSync(outputFileName)) {
-      const rawData = fs.readFileSync(outputFileName);
-      existingData = JSON.parse(rawData);
-    }
+      // Type the search tag into the search box
+      await page.type("#tags", searchTag);
 
-    while (true) {
-      try {
-        // Collect image data
-        const dataList = [];
+      // Click the search button
+      const searchBtn = await page.$("form > input[type=submit]");
+      if (searchBtn) {
+        await Promise.all([
+          searchBtn.click(),
+          console.log("Searching..."),
+          page.waitForNavigation({ waitUntil: "load" }),
+          console.log("Retriving data from rule34..."),
+          console.log("Note: This may take a while, Please be patient..."),
+          console.log("-------------------------------------------"),
+        ]);
+      }
+      // Close the readline interface after the search is performed
+      rl.close();
 
-        // Extract href attributes from all a tags inside.thumb spans
-        const hrefs = await page.evaluate(() => {
-          const links = [];
-          document.querySelectorAll(".thumb a").forEach((a) => {
-            links.push(a.href);
+      let pageCount = 0;
+      // Load existing data from the JSON file
+      let existingData = [];
+      const outputFileName = `${searchTag.replace(
+        /\s+/g,
+        "_"
+      )}_scrapped_data.json`;
+      if (fs.existsSync(outputFileName)) {
+        const rawData = fs.readFileSync(outputFileName);
+        existingData = JSON.parse(rawData);
+      }
+      while (true) {
+        try {
+          // Collect image data
+          const dataList = [];
+
+          // Extract href attributes from all a tags inside.thumb spans
+          const hrefs = await page.evaluate(() => {
+            const links = [];
+            document.querySelectorAll(".thumb a").forEach((a) => {
+              links.push(a.href);
+            });
+            return links;
           });
-          return links;
-        });
 
-        // Iterate over each href and navigate to it
-        for (let i = 0; i < hrefs.length; i++) {
-          const href = hrefs[i];
-          console.log(`Navigating to ${i + 1} of ${hrefs.length}`);
+          // Iterate over each href and navigate to it
+          for (let i = 0; i < hrefs.length; i++) {
+            const href = hrefs[i];
+            console.log(`Navigating to ${i + 1} of ${hrefs.length}`);
 
-          // Navigate to the first href and perform click
-          await page.goto(href, { waitUntil: "networkidle2" });
+            // Navigate to the first href and perform click
+            await page.goto(href, { waitUntil: "networkidle2" });
 
-          // Check if it's the first href
-          if (pageCount === 0 && i === 0) {
-            // Click on the "Always view original" link
-            const alwaysViewOriginalLink = await page.$(
-              "#resized_notice > a:nth-child(2)"
-            );
-            if (alwaysViewOriginalLink) {
-              await alwaysViewOriginalLink.click({ delay: 100 });
+            // Check if it's the first href
+            if (pageCount === 0 && i === 0) {
+              // Click on the "Always view original" link
+              const alwaysViewOriginalLink = await page.$(
+                "#resized_notice > a:nth-child(2)"
+              );
+              if (alwaysViewOriginalLink) {
+                await alwaysViewOriginalLink.click({ delay: 100 });
+              }
             }
-          }
 
-          // Extract image src and name
-          const data = await page.evaluate(() => {
-            const imgSrc = document.querySelector("#image")?.src || "";
-            const type = imgSrc ? "image" : "video";
-            const src =
-              imgSrc || document.querySelector("video source")?.src || "";
+            // Extract image, type and video
+            const data = await page.evaluate(() => {
+              const imgSrc = document.querySelector("#image")?.src || "";
+              const type = imgSrc ? "image" : "video";
+              const src =
+                imgSrc || document.querySelector("video source")?.src || "";
 
-            // Check if the stats section exists
-            const statsElement = document.querySelector("#stats");
-            if (!statsElement) {
+              // Check if the stats section exists
+              const statsElement = document.querySelector("#stats");
+              if (!statsElement) {
+                return {
+                  type,
+                  src,
+                  id: "",
+                  posted_date: "",
+                  posted_on: "",
+                  posted_by: "",
+                  size: "",
+                  external_source: "",
+                };
+              }
+
+              // Extracting id
+              const id =
+                statsElement
+                  .querySelector("li:nth-child(1)")
+                  ?.textContent?.trim()
+                  .split(": ")[1] || "";
+
+              // Extracting posted by, date and time
+              const postedText =
+                statsElement
+                  .querySelector("li:nth-child(2)")
+                  ?.textContent?.trim() || "";
+              const postedParts = postedText.split("\nby\n\n");
+              const posted_date = postedParts[0].split(" ")[1] || "";
+              const posted_on = postedParts[0].split(" ")[2] || "";
+              const posted_by = postedParts[1] || "";
+
+              // Extracting size
+              const size =
+                statsElement
+                  .querySelector("li:nth-child(3)")
+                  ?.textContent?.trim()
+                  .split(": ")[1] || "";
+
+              // Extracting external source
+              const external_source =
+                statsElement.querySelector("li:nth-child(4) a")?.href || "";
+
               return {
                 type,
                 src,
-                id: "",
-                posted_date: "",
-                posted_on: "",
-                posted_by: "",
-                size: "",
-                external_source: "",
+                id,
+                posted_date,
+                posted_on,
+                posted_by,
+                size,
+                external_source,
               };
-            }
+            });
 
-            // Extracting id
-            const id =
-              statsElement
-                .querySelector("li:nth-child(1)")
-                ?.textContent?.trim()
-                .split(": ")[1] || "";
+            // Check for duplicates before adding
+            const isDuplicate = existingData.some(
+              (item) => item.src === data.src && item.id === data.id
+            );
+            if (!isDuplicate) {
+              dataList.push(data);
+              existingData.push(data);
 
-            // Extracting posted by, date and time
-            const postedText =
-              statsElement
-                .querySelector("li:nth-child(2)")
-                ?.textContent?.trim() || "";
-            const postedParts = postedText.split("\nby\n\n");
-            const posted_date = postedParts[0].split(" ")[1] || "";
-            const posted_on = postedParts[0].split(" ")[2] || "";
-            const posted_by = postedParts[1] || "";
-
-            // Extracting size
-            const size =
-              statsElement
-                .querySelector("li:nth-child(3)")
-                ?.textContent?.trim()
-                .split(": ")[1] || "";
-
-            // Extracting external source
-            const external_source =
-              statsElement.querySelector("li:nth-child(4) a")?.href || "";
-
-            return {
-              type,
-              src,
-              id,
-              posted_date,
-              posted_on,
-              posted_by,
-              size,
-              external_source,
-            };
-          });
-
-          // Check for duplicates before adding
-          const isDuplicate = existingData.some(
-            (item) => item.src === data.src && item.id === data.id
-          );
-          if (!isDuplicate) {
-            dataList.push(data);
-            existingData.push(data);
-
-            // Download the media file
-            const directory = data.type === "image" ? "images" : "videos";
-            const extension = getFileExtension(data.src);
-            const filename = `${data.id}.${extension}`;
-            if (!fs.existsSync(directory)) {
-              fs.mkdirSync(directory);
-            }
-            await downloadFile(data.src, directory, filename);
-          }
-
-          // Save the collected data to a JSON file
-          fs.writeFileSync(
-            outputFileName,
-            JSON.stringify(existingData, null, 2),
-            (err) => {
-              if (err) {
-                console.error("Error writing JSON to file:", err);
-              } else {
-                console.log("Data written to file successfully.");
+              // Download the media file if it matches the user's choice
+              const extension = getFileExtension(data.src);
+              const filename = `${data.id}.${extension}`;
+              if (data.type === "image" && downloadImages) {
+                const directory = "images";
+                if (!fs.existsSync(directory)) {
+                  fs.mkdirSync(directory);
+                }
+                await downloadFile(data.src, directory, filename);
+              } else if (data.type === "video" && downloadVideos) {
+                const directory = "videos";
+                if (!fs.existsSync(directory)) {
+                  fs.mkdirSync(directory);
+                }
+                await downloadFile(data.src, directory, filename);
               }
             }
-          );
 
-          // Navigate back after visiting each href
-          await page.goBack();
-        }
+            // Save the collected data to a JSON file if user selected option 1 or 4
+            if (saveJson) {
+              fs.writeFileSync(
+                outputFileName,
+                JSON.stringify(existingData, null, 2),
+                (err) => {
+                  if (err) {
+                    console.error("Error writing JSON to file:", err);
+                  } else {
+                    console.log("Data written to file successfully.");
+                  }
+                }
+              );
+            }
 
-        // Select the next button and navigate to the next page
-        let nextButtonElement = await page.$('a[alt="next"]');
-        if (nextButtonElement) {
-          await Promise.all([
-            nextButtonElement.click(),
-            page.waitForNavigation({ waitUntil: "load" }),
-          ]);
-          pageCount++;
-          console.log(`Visited page count: ${pageCount}`);
-        } else {
-          console.log("No more pages to visit!");
+            // Navigate back after visiting each href
+            await page.goBack();
+          }
+
+          // Select the next button and navigate to the next page
+          let nextButtonElement = await page.$('a[alt="next"]');
+          if (nextButtonElement) {
+            await Promise.all([
+              nextButtonElement.click(),
+              page.waitForNavigation({ waitUntil: "load" }),
+            ]);
+            pageCount++;
+            console.log(`Visited page count: ${pageCount}`);
+          } else {
+            console.log("No more pages to visit!");
+            break;
+          }
+        } catch (err) {
+          console.log("Some error occured: ", err);
           break;
         }
-      } catch (err) {
-        console.log("Some error occured: ", err);
-        break;
       }
-    }
-    await browser.close();
+      await browser.close();
+    });
   });
 };
 

@@ -34,30 +34,41 @@ A Node.js console-based scraper using Puppeteer to extract images, videos and me
 ## 🫡 Example Usage
 
 ```bash
-$node index.js
-# -------------------------------------------
-#        Welcome to Rule34 Scraper Bot
-# -------------------------------------------
-# Just enter the appropriate tags, follow the same convention used in Rule34.
-# Json file, Images and Videos folder will be generated in your current path.
-# Generated json file will include images, videos and other meta data.
-# If you encounter an bug, please open a issue: https://github.com/Shivam171/rule34-scraper-bot
+$ node scraper_bot.js
+-------------------------------------------
+       Welcome to Rule34 Scraper Bot
+-------------------------------------------
+Just enter the appropriate tags, follow the same convention used in Rule34.
+Json file, Images and Videos folder will be generated in your current path.
+Generated json file will include images, videos and other meta data.
+If you encounter an bug, please open a issue: https://github.com/Shivam171/rule34-scraper-bot
 
-# NOTE: To close the program enter {ctrl + c}
-# -------------------------------------------
-# Enter your search tags: cat
-# Searching...
-# Retriving data from rule34...
-# -------------------------------------------
-# Navigating to 1 of 42
-# Navigating to 2 of 42
-# .
-# .
+NOTE: To close the program enter {ctrl + c}
+-------------------------------------------
+Enter your search tags: cartoon
+-------------------------------------------
+            Choose your option
+1. JSON data Only
+2. Images Only
+3. Videos Only
+4. All above
+-------------------------------------------
+Enter your choice: 4
+-------------------------------------------
+Searching...
+Retriving data from rule34...
+Note: This may take a while, Please be patient...
+-------------------------------------------
+Navigating to 1 of 42
+Navigating to 2 of 42
+Navigating to 3 of 42
+.
+.
 ```
 
 ## ⚠️ Disclaimer
 
-Web scraping can violate website terms of service. Use responsibly and ensure legality and ethical compliance before scraping any website. Contents of this website can be "NSFW" (not safe for work), use responsibly. This project is for educational purposes only.
+Web scraping can violate website terms of service. Contents of this website can be "NSFW" (not safe for work), Use responsibly and ensure legality and ethical compliance before scraping any website. This project is for educational purposes only.
 
 ## 🫂 Contributing
 
