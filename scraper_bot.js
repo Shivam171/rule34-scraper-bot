@@ -57,7 +57,7 @@ const main = async () => {
   console.log("       Welcome to Rule34 Scraper Bot       ");
   console.log("-------------------------------------------");
   console.log(
-    "Just enter the appropriate tags, follow the same convention used in Rule34.\nJson file will be generated in your current path.\nGenerated json file will include images, videos and other meta data.\nIf you encounter an bug, please open a issue: https://github.com/Shivam171/rule34-scraper-bot\n\nNOTE: To close the program enter {ctrl + c}"
+    "Just enter the appropriate tags, follow the same convention used in Rule34.\nJson file, Images and Videos folder will be generated in your current path.\nGenerated json file will include images, videos and other meta data.\nIf you encounter an bug, please open a issue: https://github.com/Shivam171/rule34-scraper-bot\n\nNOTE: To close the program enter {ctrl + c}"
   );
   console.log("-------------------------------------------");
   rl.question("Enter your search tags: ", async (searchTag) => {

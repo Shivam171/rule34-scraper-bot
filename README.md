@@ -6,12 +6,13 @@
 
 ## 📃 Description
 
-A Node.js console-based scraper using Puppeteer to extract images, videos and metadata into a json file, from rule34.xxx based on search tags.
+A Node.js console-based scraper using Puppeteer to extract images, videos and metadata into a json file, you can also download images and videos along with json data, from rule34.xxx based on search tags.
 
 ## ✅ Features
 
 - Added plugins that help prevent detection.
 - Scrapes images & videos URLs, post details, and other metadata.
+- Download images and videos along with json file.
 - Handles pagination and avoids duplicate data.
 - Saves data in a dynamic JSON file named after the search tags.
 
@@ -20,6 +21,8 @@ A Node.js console-based scraper using Puppeteer to extract images, videos and me
 - [Puppeteer](https://pptr.dev/) : Puppeteer is a Node.js library which provides a high-level API to control Chrome/Chromium over the DevTools Protocol. Puppeteer runs in headless mode by default, but can be configured to run in full ("headful") Chrome/Chromium.
 - [Puppeteer Extra](https://www.npmjs.com/package/puppeteer-extra) : A light-weight wrapper around puppeteer and friends to enable cool plugins through a clean interface.
 - [Puppeteer Extra Plugin Stealth](https://www.npmjs.com/package/puppeteer-extra-plugin-stealth) : A plugin for puppeteer-extra and playwright-extra to prevent detection.
+- [Node : Path](https://nodejs.org/api/path.html) : module provides utilities for working with file and directory path.
+- [Axios](https://www.npmjs.com/package/axios) : is a promise based HTTP client for the browser and node.js.
 
 ## 🤔 How to Use
 
@@ -31,10 +34,25 @@ A Node.js console-based scraper using Puppeteer to extract images, videos and me
 ## 🫡 Example Usage
 
 ```bash
-node index.js
-# Enter search term: cat
-# Scraping data for cat...
-# Data saved in cat_scrapped_data.json
+$node index.js
+# -------------------------------------------
+#        Welcome to Rule34 Scraper Bot
+# -------------------------------------------
+# Just enter the appropriate tags, follow the same convention used in Rule34.
+# Json file, Images and Videos folder will be generated in your current path.
+# Generated json file will include images, videos and other meta data.
+# If you encounter an bug, please open a issue: https://github.com/Shivam171/rule34-scraper-bot
+
+# NOTE: To close the program enter {ctrl + c}
+# -------------------------------------------
+# Enter your search tags: cat
+# Searching...
+# Retriving data from rule34...
+# -------------------------------------------
+# Navigating to 1 of 42
+# Navigating to 2 of 42
+# .
+# .
 ```
 
 ## ⚠️ Disclaimer
