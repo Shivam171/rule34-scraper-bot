@@ -27,8 +27,8 @@ A Node.js console-based scraper using Puppeteer to extract images, videos and me
 ## 🤔 How to Use
 
 1. Clone the repository.
-2. Install dependencies with `npm install`.
-3. Run the app with `node index.js`.
+2. Move inside the folder and install dependencies with `npm install`.
+3. Run the app with `node scraper_bot.js`.
 4. Enter your search term when prompted.
 
 ## 🫡 Example Usage
