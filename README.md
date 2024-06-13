@@ -68,7 +68,7 @@ Navigating to 3 of 42
 
 ## ⚠️ Disclaimer
 
-Web scraping can violate website terms of service. Contents of this website can be "NSFW" (not safe for work), Use responsibly and ensure legality and ethical compliance before scraping any website. This project is for educational purposes only.
+Web scraping can violate website terms of service. Contents of this website can be "NSFW" (not safe for work), Use responsibly and ensure legality and ethical compliance before scraping any website. `This project is for educational purposes only.`
 
 ## 🫂 Contributing
 
