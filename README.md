@@ -2,7 +2,8 @@
 
 # 🔞 Rule34 Scraper Bot 🤖
 
-[![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)]()
+![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github) ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat) [![GitHub license](https://badgen.net/github/license/Naereen/Strapdown.js)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+
 
 ## 📃 Description
 
@@ -10,11 +11,14 @@ A Node.js console-based scraper using Puppeteer to extract images, videos and me
 
 ## ✅ Features
 
+<img src="https://media.tenor.com/Tvghxa_OarkAAAAi/meme-meme-indonesia.gif" height="150px" align="right"/>
+
 - Added plugins that help prevent detection.
 - Scrapes images & videos URLs, post details, and other metadata.
 - Download images and videos along with json file.
 - Handles pagination and avoids duplicate data.
 - Saves data in a dynamic JSON file named after the search tags.
+
 
 ## 📦 Packages Used
 
